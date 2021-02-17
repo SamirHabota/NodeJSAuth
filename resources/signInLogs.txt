@@ -2,3 +2,4 @@ admin ::1 denied
 admin ::1 success
 admin ::1 success
 agent ::1 success
+admin ::1 success

@@ -23,34 +23,51 @@ router.post(
     //and then decrypt them on the server, with the same algorithm
     //the decryption would be done here, first
 
+    //check if the passwords are matching
     if (req.body?.password !== req.body?.confirmPassword) {
       res.status(409);
       res.json({
         response: "The passwords did not match",
       });
     } else {
-      //hash the passwords to the database
-      //never save them in plain text format
-      var salt = generateSalt(15);
+      //check if the username is already taken
+      var sameUsername = false;
+      eachLine("./resources/users.txt", function (line) {
+        if (line.split(" ")[1] === req.body?.username) sameUsername = true;
+      }).then(function () {
+        if (sameUsername) {
+          res.status(409);
+          res.json({
+            response: "The username is already taken",
+          });
+        } else {
+          //hash the passwords to the database
+          //never save them in plain text format
+          var salt = generateSalt(15);
+          var id = uuidv4();
 
-      logger.write(
-        uuidv4() +
-          " " +
-          req.body?.username +
-          " " +
-          salt +
-          " " +
-          generateHash(req.body.password, salt) +
-          " " +
-          req.body?.role +
-          " " +
-          req.body?.active +
-          "\n"
-      );
-      res.status(200);
-      res.json({
-        response:
-          "The user " + req.body.username + " has been added to the database",
+          logger.write(
+            id +
+              " " +
+              req.body?.username +
+              " " +
+              salt +
+              " " +
+              generateHash(req.body.password, salt) +
+              " " +
+              req.body?.role +
+              " " +
+              req.body?.active +
+              "\n"
+          );
+          res.status(200);
+          res.json({
+            id: id,
+            username: req.body?.username,
+            role: req.body?.role,
+            active: req.body?.active,
+          });
+        }
       });
     }
   }
