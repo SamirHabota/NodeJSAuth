@@ -4,9 +4,245 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+      crossorigin="anonymous"
+    ></script>
     <title>NodeJSAuth</title>
   </head>
-  <body>
-    <p>App</p>
+  <body style="background-color: #dcdcdc">
+    <div class="mt-5 mb-5">
+      <article class="markdown-body entry-content container-lg" itemprop="text">
+        <h1>NodeJSAuth</h1>
+        <p class="mb-5">
+          Repository at:
+          <a href="https://github.com/SamirHabota/NodeJSAuth" target="_blank"
+            >https://github.com/SamirHabota/NodeJSAuth</a
+          >
+        </p>
+        <h2>Introduction</h2>
+        <p>
+          This is a NodeJs startup project, meant to initialize a new backend
+          API application, using Express, with all the user management and
+          authentication features already build into it. The repository comes
+          with four prebuild endpoints: add a new user, get the list of all
+          users, authenticate and login a user, as well as get all user data.
+        </p>
+        <p>
+          The core of the startup app is JWT (Json Web Token) authorization. The
+          endpoints are protected with an api key, and an access JWT to be
+          accessed, of course except the login route. Role management, sign in
+          attempts and ip tracking, password decryption and more, are all
+          initialized and ready to go.
+        </p>
+        <p>
+          No database has been hooked up to the API, instead a txt file system
+          is used to simulate one, so that the user can connect a database of
+          his choice to the server, later on in the project. All the data,
+          simulating a database, can be found inside the
+          <code>resources</code> folder (users and signInLogs .txt).
+        </p>
+        <p>
+          Additionaly, for frontend testing, especially using a JWT server
+          integration, the base API has been deployed, and initialized. On how
+          to use it, and more infomration, read the subheaders below.
+        </p>
+        <h2>Installation</h2>
+        <p>
+          Prerequisites are having git (<a
+            href="https://git-scm.com/downloads"
+            rel="nofollow"
+            target="_blank"
+            >https://git-scm.com/downloads</a
+          >) and NodeJs (<a
+            href="https://nodejs.org/en/download/"
+            rel="nofollow"
+            target="_blank"
+            >https://nodejs.org/en/download/</a
+          >) installed on your machine, additionaly a GitHub account. Download
+          the repository as a zip file, or open a terminal of your choice,
+          navigate to a desired directory and run the command
+          <code>git clone repository_link</code> to get all the files.
+        </p>
+        <p>
+          Next open the terminal via a command line or from an IDE of your
+          choice, inside the root directory and run the command
+          <code>npm install</code> to install all the necessary dependencies.
+          Lastly since the app is build using Express, run the command
+          <code>npm start</code> to start the server. You will be greated by the
+          API documentation, and the ednpoints will start to listen on port
+          3000.
+        </p>
+        <h2>Endpotins</h2>
+        <h3>
+          <code>/auth</code>
+        </h3>
+        <p>
+          This POST endpoint is used to authenticate the user. It accepts the
+          user's username and password, and responds with the access JWT if the
+          user is registered and active in the database. Every login attempt is
+          saved in the database (username that was typed in, ip address, as well
+          as the success status).
+        </p>
+        <h4>request</h4>
+        <div class="highlight highlight-source-json">
+          <pre>{
+  <span class="pl-s"><span class="pl-pds">"</span>username<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>,
+  <span class="pl-s"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>
+}</pre>
+        </div>
+        <h4>response</h4>
+        <div class="highlight highlight-source-json">
+          <pre>{
+  <span class="pl-s"><span class="pl-pds">"</span>accessToken<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>
+}</pre>
+        </div>
+        <h3>
+          <code>/user/addNewUser</code>
+        </h3>
+        <p>
+          This POST endpoint adds a new user to the database. Attributes can be
+          expanded on. It expects an Authorization Bearer token, that can be
+          received from the <code>/auth</code> endpoint on login, as well as the
+          API key in its headers. Only a user with the role
+          <code>admin</code> can access this endpoint. Roles, usernames,
+          activities and ids are stored inside the JWT. The two main roles are
+          <code>admin</code> and <code>agent</code>. The passwords are
+          encrypted, and stored as hash and salt attributes inside the database.
+        </p>
+        <h4>request</h4>
+        <div class="highlight highlight-source-json">
+          <pre>{
+  <span class="pl-s"><span class="pl-pds">"</span>username<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>,
+  <span class="pl-s"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>,
+  <span class="pl-s"><span class="pl-pds">"</span>confirmPassword<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>, 
+  <span class="pl-s"><span class="pl-pds">"</span>role<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>agent<span class="pl-pds">"</span></span>,
+  <span class="pl-s"><span class="pl-pds">"</span>active<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>1 - 0<span class="pl-pds">"</span></span>
+}</pre>
+        </div>
+        <h4>response</h4>
+        <div class="highlight highlight-source-json">
+          <pre>{
+  <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>,
+  <span class="pl-s"><span class="pl-pds">"</span>username<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>,    
+  <span class="pl-s"><span class="pl-pds">"</span>role<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>agent<span class="pl-pds">"</span></span>,
+  <span class="pl-s"><span class="pl-pds">"</span>active<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>1 - 0<span class="pl-pds">"</span></span>
+}</pre>
+        </div>
+        <h3>
+          <code>/user/getAllUsers</code>
+        </h3>
+        <p>
+          This GET endpoint gets a list of json objects, that represent all the
+          registered users in the app. It expects an Authorization Bearer token,
+          that can be received from the <code>/auth</code> endpoint on login, as
+          well as the API key in its headers. Only a user with the role
+          <code>admin</code> can access this endpoint. Roles, usernames,
+          activities and ids are stored inside the JWT. The two main roles are
+          <code>admin</code> and <code>agent</code>.
+        </p>
+        <h4>response</h4>
+        <div class="highlight highlight-source-json">
+          <pre>[
+  {
+      <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>username<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>role<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>active<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>1 - 0<span class="pl-pds">"</span></span>
+  }
+]</pre>
+        </div>
+        <h3>
+          <code>/user/me</code>
+        </h3>
+        <p>
+          This GET endpoint fetches all the user data, based on the JWT. It
+          expects an Authorization Bearer token, that can be received from the
+          <code>/auth</code> endpoint on login, as well as the API key in its
+          headers. Roles, usernames, activities and ids are stored inside the
+          JWT. The two main roles are <code>admin</code> and <code>agent</code>.
+        </p>
+        <h4>response</h4>
+        <div class="highlight highlight-source-json">
+          <pre>{
+<span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>,
+<span class="pl-s"><span class="pl-pds">"</span>username<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>,
+<span class="pl-s"><span class="pl-pds">"</span>role<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>,
+<span class="pl-s"><span class="pl-pds">"</span>active<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>1 - 0<span class="pl-pds">"</span></span>
+}</pre>
+        </div>
+        <h2>Initial credentials and keys</h2>
+        <p>
+          An initial admin user must be seeded inside the database, to get
+          access to any of the API's functionalities. There are two users seeded
+          inside the .txt database, one administrator (username: admin,
+          password: admin), and one agent (username: agent, password: agent).
+          For simplicity, altough the passwords get hashed and kept with their
+          salts in the database, they are not formatted to password standards.
+          The final user can write out a desired regex as he wishes.
+        </p>
+        <p>
+          All the other keys (API and JWT key) can be found and modified in the
+          <code>.env</code> file, inside the reposiroty:
+        </p>
+        <div class="highlight highlight-source-json">
+          <pre>API_KEY=<span class="pl-s"><span class="pl-pds">"</span>df057bbe-a609-4e38-92e6-b782840b19a8<span class="pl-pds">"</span></span>
+JWT_KEY=<span class="pl-s"><span class="pl-pds">"</span>3efd26bf-e1df-4a4e-a837-67a122c00453<span class="pl-pds">"</span></span></pre>
+        </div>
+        <h2>Heroku hosting</h2>
+        <p>
+          One of the options for deploying and hosting a NodeJs API server is
+          Heroku (<a
+            href="https://www.heroku.com"
+            rel="nofollow"
+            target="_blank"
+            >https://www.heroku.com</a
+          >). Prerequisites are having the heroku cli installed on your machine
+          by running the command <code>npm install -g heroku</code>.
+        </p>
+        <p>
+          To host the server, go to Heroku, create an account and login. Create
+          a new app, and either create a repository directly on Heroku, and push
+          your code there, or to make use of "private" CI/CD: first publish the
+          code on GitHhub, and then connect that GitHub repository to the Heroku
+          app (or other Git services like GitLab or Gitbucket). By choosing the
+          <code>master</code> branch, every commit or pull request to master,
+          will automtically update your server. From there a SSL and domain name
+          setup are further down the settings.
+        </p>
+        <p>
+          Lastly, to run the server on Heroku, a special file must be added to
+          the root directory, with the execution command when hosted. For Heroku
+          the file name should be <code>Procfile</code>, and if the server is
+          build on Express the execution command should be
+          <code>web: npm start</code>. Use <code>web: node app.js</code> or
+          <code>web: node index.js</code> if using other or custom methods or
+          scripts to run the server. This command can be viewed and changed from
+          inside Heroku.
+        </p>
+        <p>
+          For frontend testing purposes, an instance of this startup app has
+          been hosted on:
+          <a
+            href="https://node-js-auth-api.herokuapp.com"
+            rel="nofollow"
+            target="_blank"
+            >https://node-js-auth-api.herokuapp.com</a
+          >.
+        </p>
+      </article>
+    </div>
   </body>
 </html>
