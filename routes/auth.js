@@ -53,7 +53,10 @@ router.post("/", function (req, res) {
             role: user.role,
             active: user.active,
           },
-          process.env.JWT_KEY
+          process.env.JWT_KEY,
+          {
+            expiresIn: "2h",
+          }
         );
         logger.write(clientIp + " success\n");
         res.status(200);
