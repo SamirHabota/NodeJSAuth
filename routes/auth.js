@@ -9,15 +9,17 @@ const logger = fs.createWriteStream("./resources/signInLogs.txt", {
   flags: "a", // 'a' means appending (old data will be preserved)
 });
 var { compareHash } = require("../security/passwordHasher");
+var { validateAndInjectBasicAuthData } = require("../auth/basicAuthValidator");
 
 //dont send an api key to the login route
 //even if the creditentials are incorect, the api key
 //will be visible inside the developer tools of the browser
 //the password field protects this route, instead of the api key
-//send the api key only if user authentication successfully
-router.post("/", function (req, res) {
-  //read username and password from request body
-  const { username, password } = req.body;
+//send the api key only if user authentication successfull
+//the username and password are protected using basic API authentication
+router.get("/", validateAndInjectBasicAuthData, (req, res) => {
+  //read username and password from basic auth injection
+  const { username, password } = req.credentials;
 
   //it is a good practice to tarck sign in attempts, and store them to the database, with their ip address
   var clientIp = username + " " + req.connection.remoteAddress;

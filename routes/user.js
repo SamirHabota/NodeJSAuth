@@ -18,7 +18,7 @@ router.post(
   validateApiKey,
   authenticateJWT,
   valdiateRole("admin"),
-  function (req, res) {
+  (req, res) => {
     //it's always a good idea to encrypt your passwords before sending them to the server
     //and then decrypt them on the server, with the same algorithm
     //the decryption would be done here, first
@@ -78,7 +78,7 @@ router.get(
   validateApiKey,
   authenticateJWT,
   valdiateRole("admin"),
-  function (req, res) {
+  (req, res) => {
     var responseArray = [];
     eachLine("./resources/users.txt", function (line) {
       responseArray.push({
@@ -98,7 +98,7 @@ router.get(
   validateApiKey,
   authenticateJWT,
   valdiateRole("admin;agent"),
-  function (req, res) {
+  (req, res) => {
     res.json(req.user);
   }
 );
