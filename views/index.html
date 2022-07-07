@@ -90,19 +90,15 @@
           <code>/auth</code>
         </h3>
         <p>
-          This POST endpoint is used to authenticate the user. It accepts the
+          This GET endpoint is used to authenticate the user. It accepts the
           user's username and password, and responds with the access JWT if the
-          user is registered and active in the database. Every login attempt is
-          saved in the database (username that was typed in, ip address, as well
-          as the success status).
+          user is registered and active in the database. The endpoint expects
+          the username and password to be sent as a Authorization Basic token to
+          the headers Authorization field, which encrypts the username and
+          password to a base64 string. Every login attempt is saved in the
+          database (username that was typed in, ip address, as well as the
+          success status).
         </p>
-        <h4>request</h4>
-        <div class="highlight highlight-source-json">
-          <pre>{
-  <span class="pl-s"><span class="pl-pds">"</span>username<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>,
-  <span class="pl-s"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>
-}</pre>
-        </div>
         <h4>response</h4>
         <div class="highlight highlight-source-json">
           <pre>{

@@ -18,7 +18,7 @@ Next open the terminal via a command line or from an IDE of your choice, inside 
 
 ## Endpotins
 ### `/auth`
-This GET endpoint is used to authenticate the user. It accepts the user's username and password, and responds with the access JWT if the user is registered and active in the database. The endpoint expects the username and password to be sent as a Authorization Basic token to the headers Authorization field, which encrypts the username and password to a base64 string. The endpoint e Every login attempt is saved in the database (username that was typed in, ip address, as well as the success status).
+This GET endpoint is used to authenticate the user. It accepts the user's username and password, and responds with the access JWT if the user is registered and active in the database. The endpoint expects the username and password to be sent as a Authorization Basic token to the headers Authorization field, which encrypts the username and password to a base64 string. Every login attempt is saved in the database (username that was typed in, ip address, as well as the success status).
 
 #### response
 ```json
